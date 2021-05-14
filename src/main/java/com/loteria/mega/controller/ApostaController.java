@@ -45,24 +45,28 @@ public class ApostaController {
 	}
 
 	@GetMapping("/{email}")
-	public List<ApostaResponseDTO> listarApostas(@PathVariable String email) {
+	public ResponseEntity<?> listarApostas(@PathVariable String email) {
 
 		Pessoa pessoaExiste = pessoaRepository.findByEmailEquals(email);
-		
-		if (pessoaExiste == null) {
-			return null;
-		} else {
 
-			ArrayList<Aposta> apostas = apostaRepository.findByPessoaEquals(pessoaExiste);
+		try {
+			if (pessoaExiste == null) {
+				throw new Exception(String.format("Email %s não encontrado", email));
+			} else {
 
-			List<ApostaResponseDTO> apostasDTO = new ArrayList<>();
+				ArrayList<Aposta> apostas = apostaRepository.findByPessoaEquals(pessoaExiste);
 
-			for (Aposta aposta : apostas) {
-				ApostaResponseDTO apostaResponseDTO = ApostaResponseDTO.toDTO(aposta);
-				apostasDTO.add(apostaResponseDTO);
+				List<ApostaResponseDTO> apostasDTO = new ArrayList<>();
+
+				for (Aposta aposta : apostas) {
+					ApostaResponseDTO apostaResponseDTO = ApostaResponseDTO.toDTO(aposta);
+					apostasDTO.add(apostaResponseDTO);
+				}
+
+				return ResponseEntity.ok(apostasDTO);
 			}
-
-			return apostasDTO;
+		} catch (Exception e){
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 }
