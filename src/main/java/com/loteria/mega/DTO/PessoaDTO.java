@@ -11,7 +11,6 @@ public class PessoaDTO {
     private PessoaDTO() {
     }
 
-
     public Pessoa transformaParaObjeto() {
         return new Pessoa(this.email);
     }
@@ -19,7 +18,6 @@ public class PessoaDTO {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
