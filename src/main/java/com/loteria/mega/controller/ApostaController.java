@@ -36,13 +36,26 @@ public class ApostaController {
 	private ApostaService apostaService;
 	
 	@PostMapping
-	public ResponseEntity<ApostaResponseDTO> createAposta(@RequestBody @Valid PessoaDTO dto) {
+	public ResponseEntity<?> createAposta(@RequestBody @Valid PessoaDTO dto){
 
-		Pessoa pessoa = pessoaService.salvar(dto.transformaParaObjeto());
-		Aposta aposta = apostaService.salvar(pessoa);
+		try {
+			String email = dto.getEmail();
 
-		return new ResponseEntity<>(ApostaResponseDTO.toDTO(aposta), HttpStatus.CREATED);
+			if (email == "") {
+				throw new IllegalArgumentException("email inválido");
+			} else {
+
+				Pessoa pessoa = pessoaService.salvar(dto.transformaParaObjeto());
+				Aposta aposta = apostaService.salvar(pessoa);
+
+				return new ResponseEntity<>(ApostaResponseDTO.toDTO(aposta), HttpStatus.CREATED);
+			}
+
+		} catch(Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
+
 
 	@GetMapping("/{email}")
 	public ResponseEntity<?> listarApostas(@PathVariable String email) {
