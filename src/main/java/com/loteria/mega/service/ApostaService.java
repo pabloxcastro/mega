@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.loteria.mega.service.Numeros.*;
+
 @Service
 public class ApostaService {
 
@@ -19,28 +21,9 @@ public class ApostaService {
 
         Aposta aposta = new Aposta();
         aposta.setPessoa(pessoa);
-        aposta.setNumero(sortearNumeros());
+        aposta.setNumero(sortear());
         return apostaRepository.save(aposta);
     }
 
-    private String sortearNumeros(){
 
-        ArrayList<Integer> listaNumero;
-        listaNumero = new ArrayList<>();
-
-        Random numerosSorteados = new Random();
-
-        for (int n = 0; n < 6; ) {
-            Integer dezena = numerosSorteados.nextInt(60) + 1;
-            if (!listaNumero.contains(dezena)) {
-                listaNumero.add(dezena);
-                n++;
-            }
-        }
-        Collections.sort(listaNumero);
-
-        return listaNumero.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining(","));
-    }
 }
