@@ -40,15 +40,10 @@ public class ApostaController {
 	@PostMapping
 	public ResponseEntity<?> createAposta(@RequestBody @Valid Pessoa pessoa){
 
-		try {
-			Pessoa pessoaNova = pessoaService.salvar(pessoa);
-			Aposta aposta = apostaService.salvar(pessoaNova);
+		Pessoa pessoaNova = pessoaService.salvar(pessoa);
+		Aposta aposta = apostaService.salvar(pessoaNova);
 
-			return new ResponseEntity<>(ApostaResponseDTO.toDTO(aposta), HttpStatus.CREATED);
-
-		} catch(Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		return new ResponseEntity<>(ApostaResponseDTO.toDTO(aposta), HttpStatus.CREATED);
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
