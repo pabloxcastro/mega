@@ -1,14 +1,14 @@
 package com.loteria.mega.controller;
-
 import javax.validation.Valid;
 
 import com.loteria.mega.DTO.ApostaResponseDTO;
-import com.loteria.mega.DTO.PessoaDTO;
 import com.loteria.mega.service.ApostaService;
 import com.loteria.mega.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import com.loteria.mega.model.Aposta;
@@ -17,7 +17,9 @@ import com.loteria.mega.repositories.ApostaRepository;
 import com.loteria.mega.repositories.PessoaRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/aposta")
@@ -36,24 +38,29 @@ public class ApostaController {
 	private ApostaService apostaService;
 	
 	@PostMapping
-	public ResponseEntity<?> createAposta(@RequestBody @Valid PessoaDTO dto){
+	public ResponseEntity<?> createAposta(@RequestBody @Valid Pessoa pessoa){
 
 		try {
-			String email = dto.getEmail();
+			Pessoa pessoaNova = pessoaService.salvar(pessoa);
+			Aposta aposta = apostaService.salvar(pessoaNova);
 
-			if (email == "") {
-				throw new IllegalArgumentException("email inválido");
-			} else {
-
-				Pessoa pessoa = pessoaService.salvar(dto.transformaParaObjeto());
-				Aposta aposta = apostaService.salvar(pessoa);
-
-				return new ResponseEntity<>(ApostaResponseDTO.toDTO(aposta), HttpStatus.CREATED);
-			}
+			return new ResponseEntity<>(ApostaResponseDTO.toDTO(aposta), HttpStatus.CREATED);
 
 		} catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
+	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException exception) {
+
+		Map <String, String> errors = new HashMap<>();
+
+		exception.getBindingResult().getFieldErrors().
+				forEach(error->errors.put(error.getField(), error.getDefaultMessage()));
+
+		return errors;
 	}
 
 
