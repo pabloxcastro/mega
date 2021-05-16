@@ -9,8 +9,8 @@ import javax.validation.constraints.NotBlank;
 public class Pessoa {
 
 	@Id
-	@Email
-	@NotBlank
+	@Email(message = "Email inválido")
+	@NotBlank(message = "Email não pode ser em branco ou nulo")
 	private String email;
 
 	public Pessoa(String email) {
