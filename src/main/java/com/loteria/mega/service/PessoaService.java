@@ -15,7 +15,7 @@ public class PessoaService {
         Pessoa pessoaExiste = pessoaRepository.findByEmailEquals(pessoa.getEmail());
 
         if (pessoaExiste == null) {
-                pessoaRepository.save(pessoa);
+            pessoaRepository.save(pessoa);
         } else {
             pessoa = pessoaExiste;
         }
