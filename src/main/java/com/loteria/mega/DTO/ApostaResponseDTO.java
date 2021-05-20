@@ -2,30 +2,19 @@ package com.loteria.mega.DTO;
 
 import com.loteria.mega.model.Aposta;
 import com.loteria.mega.model.Pessoa;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@AllArgsConstructor
+@Data
 public class ApostaResponseDTO {
     private String numero;
-    private Pessoa pessoa;
+    private String email;
 
     public static ApostaResponseDTO toDTO(Aposta aposta) {
-        return new ApostaResponseDTO(aposta.getNumero(), aposta.getPessoa());
+        return new ApostaResponseDTO(aposta.getNumero(), aposta.getPessoa().getEmail());
     }
 
-    public ApostaResponseDTO(String numero, Pessoa pessoa) {
-        this.numero = numero;
-        this.pessoa = pessoa;
-    }
 
-    public String getNumero() {
-        return numero;
-    }
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
+
 }

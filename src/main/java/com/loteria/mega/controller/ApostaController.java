@@ -60,4 +60,19 @@ public class ApostaController {
 
 		return ResponseEntity.ok(apostasDTO);
 	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> excluirAposta(@PathVariable Long id){
+
+		Pessoa pessoa = pessoaRepository.findById(id);
+
+		if (pessoa == null) {
+			throw new PessoaNaoEncontrada(id);
+		}
+
+		Integer qtdExcluida = apostaService.remover(pessoa);
+
+		return new ResponseEntity<>(String.format("Foram excluídas %d apostas", qtdExcluida),
+				HttpStatus.OK);
+	}
 }

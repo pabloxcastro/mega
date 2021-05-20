@@ -38,6 +38,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(PessoaPossuiApostas.class)
+    public ResponseEntity<Object> handlePessoaPossuiApostasException(
+            PessoaPossuiApostas ex) {
+
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error", ex.getMessage());
+
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
+    }
+
 }
 
 
