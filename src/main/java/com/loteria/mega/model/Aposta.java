@@ -1,12 +1,14 @@
 package com.loteria.mega.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+@NoArgsConstructor
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Aposta {
 	
@@ -20,18 +22,4 @@ public class Aposta {
 	@Column
 	private String numero;
 
-	public Aposta(String numero, Pessoa pessoa) {
-		this.numero = numero;
-		this.pessoa = pessoa;
-	}
-	public Aposta() {
-		//
-	}
-
-	public void setNumero(String numero) {this.numero = numero;}
-	public Pessoa getPessoa() {return pessoa;}
-	public void setPessoa(Pessoa pessoa) {this.pessoa = pessoa;}
-	public String getNumero() {return numero;}
-
-	
 }
