@@ -1,11 +1,9 @@
 package com.loteria.mega.service;
 
-import com.loteria.mega.exception.PessoaPossuiApostas;
 import com.loteria.mega.model.Aposta;
 import com.loteria.mega.model.Pessoa;
 import com.loteria.mega.repositories.ApostaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
